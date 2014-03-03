@@ -10,6 +10,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     'city'=>'required|alpha|min:2',
 	'talent'=>'required',
     'email'=>'required|email|unique:users',
+	'username'=>'required|alpha_dash|between:3,10|unique:users',
     'password'=>'required|alpha_num|between:6,12|confirmed',
     'password_confirmation'=>'required|alpha_num|between:6,12'
     );

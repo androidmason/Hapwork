@@ -1,4 +1,4 @@
-{{ Form::open(array('url'=>'users/signin', 'class'=>'form-signin')) }}
+{{ Form::open(array('url'=>'/signin', 'class'=>'form-signin')) }}
     <h2 class="form-signin-heading">Please Login</h2>
  
     {{ Form::text('email', null, array('class'=>'input-block-level', 'placeholder'=>'Email Address')) }}

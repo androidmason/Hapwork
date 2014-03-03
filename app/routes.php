@@ -11,7 +11,20 @@
 |
 */
 
+
+
 	
-Route::controller('users', 'UsersController');
+Route::controller('/', 'HomeController');
+Route::controller('home', 'UsersController');
+
+Route::get('/{username}',array(
+ 'as' => 'profile-user',
+ 'uses' => 'ProfileController@user'
+ ));
+  
+ Route::post('upload', 'ProfileController@upload');
+ Route::post('multiupload', 'HomeController@multiUpload');
+
+
 
 

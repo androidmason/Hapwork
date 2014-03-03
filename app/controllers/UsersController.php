@@ -1,20 +1,15 @@
 <?php
 
 class UsersController extends BaseController{
-  protected $layout = "layouts.main";
-  
+  protected $layout = "layouts.home";
   
   public function __construct() {
     $this->beforeFilter('csrf', array('on'=>'post'));
 	$this->beforeFilter('auth', array('only'=>array('getProfile')));
 }
-
-  public function getLogin() {
-    $this->layout->content = View::make('users.login');
-}
   
-  public function getRegister() {
-    $this->layout->content = View::make('users.register');
+  public function getProfile() {
+    $this->layout->content = View::make('home.profile');
 }
 
   public function postCreate() {
@@ -53,14 +48,72 @@ class UsersController extends BaseController{
 }
 }
 
-  public function getProfile() {
+  public function getSignIn() {
      $this->layout->content = View::make('users.profile');
 }
   public function getLogout() {
     Auth::logout();
     return Redirect::to('users/login')->with('message', 'Your are now logged out!');
 }
-  
+  public function post_upload(){
+ 
+    $input = Input::all();
+    $rules = array(
+        'file' => 'image|max:3000',
+    );
+ 
+    $validation = Validator::make($input, $rules);
+ 
+    if ($validation->fails())
+    {
+        return Response::make($validation->errors->first(), 400);
+    }
+ 
+    $file = Input::file('file');
+ 
+    $destinationPath = 'uploads/'.str_random(8);
+	$filename = $file->getClientOriginalName();
+	//$extension =$file->getClientOriginalExtension(); 
+	$upload_success = Input::file('file')->move($destinationPath, $filename);
+ 
+if( $upload_success ) {
+   return View::make('home.profile')
+									->with('creatyst',$creatyst);
+} else {
+   return Response::json('error', 400);
+}
+}
+
+public function postMultiupload(){
+	$input = Input::all();
+    $rules = array(
+        'file' => 'image|max:3000',
+    );
+ 
+    $validation = Validator::make($input, $rules);
+ 
+    if ($validation->fails())
+    {
+        return Response::make($validation->errors->first(), 400);
+    }
+ 
+    $file = Input::file('file[]');
+ 
+    $extension = File::extension($file['name']);
+    $directory = path('public').'uploads/'.Input::get('folder');
+    $filename = sha1(time().time()).".{$extension}";
+ 
+    $upload_success = Input::upload('file', $directory, $filename);
+ 
+    if( $upload_success ) {
+       return View::make('home.profile')
+									->with('creatyst',$creatyst);
+    } else {
+        return Response::json('error', 400);
+    }
+}
+
+
 }
 
 ?>

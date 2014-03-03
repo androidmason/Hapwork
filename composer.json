@@ -8,7 +8,8 @@
         "cartalyst/sentry": "2.0.*",
         "illuminate/database": "*",
         "ircmaxell/password-compat": "1.0.*",
-		"twitter/bootstrap": "*"
+		"twitter/bootstrap": "*",
+		"imagine/Imagine": "v0.4.1"
     },
     "minimum-stability": "stable",
 	"autoload": {
@@ -18,7 +19,9 @@
 			"app/models",
 			"app/database/migrations",
 			"app/database/seeds",
-			"app/tests/TestCase.php"
+			"app/tests/TestCase.php",
+			"app/services",
+			"app/facades"
 		]
 	},
 	"scripts": {
