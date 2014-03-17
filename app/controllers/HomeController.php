@@ -61,12 +61,12 @@ class HomeController extends BaseController {
     Auth::logout();
     return Redirect::to('login')->with('message', 'Your are now logged out!');
 }
-  public function post_upload(){
+  public function postUpload(){
  
     $input = Input::all();
     $rules = array(
-        'file' => 'image|max:5000',
-    );
+        'size' => 'max:50000',
+		'type' => 'mimes:png,jpg,gif'    );
  
     $validation = Validator::make($input, $rules);
  
@@ -74,25 +74,32 @@ class HomeController extends BaseController {
     {
         return Response::make($validation->errors->first(), 400);
     }
- 
+   
     $file = Input::file('file');
+	$directory = 'profilepic\\'.Input::get('folder');
+    $extension = File::extension($file);    
+    $filename = sha1(time().time()).".{$extension}"; 
+    $upload_success = Image::upload($file, $directory, false);
+	
  
-    $destinationPath = 'uploads/'.str_random(8);
-	$filename = $file->getClientOriginalName();
-	//$extension =$file->getClientOriginalExtension(); 
-	$upload_success = Input::file('file')->move($destinationPath, $filename);
- 
-if( $upload_success ) {
-   return Response::json('success', 200);
-} else {
-   return Response::json('error', 400);
-}
+    if( $upload_success ) {
+        $user = User::where('username','=',Input::get('folder'))->first();
+		$user->profilepic = $file->getClientOriginalName();
+		$user->save();
+		return View::make('home.profile')
+        ->with('creatyst', $user);
+    } else {
+	    
+        return Response::json('error', 400);
+		
+    }
 }
 
 public function postMultiupload(){
 	$input = Input::all();
     $rules = array(
-        'file' => 'image|max:5000',
+        'size' => 'max:50000',
+		'type' => 'mimes:png,jpg,gif,avi,mp4'
     );
  
     $validation = Validator::make($input, $rules);
@@ -111,7 +118,9 @@ public function postMultiupload(){
 	
  
     if( $upload_success ) {
-        return Response::json('success', 200);
+        $creatyst = User::where('username','=',$directory)->first();
+     return View::make('home.profile')
+        ->with('creatyst', $creatyst);
     } else {
 	    
         return Response::json('error', 400);

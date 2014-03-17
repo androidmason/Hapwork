@@ -6,3 +6,113 @@ body {
     width: 400px;
     margin: 0 auto;
 }
+
+#left_pane {
+  width: 300px;
+  position: absolute;
+  height: 100%;
+  float: left;
+  margin-top: 50px;
+  background-color: #ffffff;
+  opacity:0.6;
+  filter:alpha(opacity=60);
+}
+#left_pane div {
+	width: 180px;
+	padding: 0px 20px 0 0;
+}
+#left_pane h1 {
+	padding: 20px 15px 0 15px;
+	font-size:40px;
+}
+#left_pane h1 a {
+	display: block;
+	width: 180px;
+	height: 60px;
+	background: url(img/white180.png) no-repeat center center;
+}
+body.white #left_pane {
+	border-right: 0 none;
+}
+body.white #left_pane h1 a {
+	background-image: url(img/black180.png);
+}
+#left_pane .circular {
+	width: 150px;
+	height: 150px;
+	border:0;
+	border-radius: 150px;
+	-webkit-border-radius: 150px;
+	-moz-border-radius: 150px;
+}
+#left_pane ul li {
+	line-height: 1.5em;
+}
+
+
+#mask {
+	display: none;
+	background: #000; 
+	position: fixed; left: 0; top: 0; 
+	z-index: 10;
+	width: 100%; height: 100%;
+	opacity: 0.8;
+	z-index: 999;
+}
+
+.login-popup{
+	display:none;
+	background: #333;
+	padding: 10px; 	
+	border: 2px solid #ddd;
+	float: left;
+	font-size: 1.2em;
+	position: fixed;
+	top: 50%; left: 50%;
+	z-index: 99999;
+	box-shadow: 0px 0px 20px #999;
+	-moz-box-shadow: 0px 0px 20px #999; /* Firefox */
+    -webkit-box-shadow: 0px 0px 20px #999; /* Safari, Chrome */
+	border-radius:3px 3px 3px 3px;
+    -moz-border-radius: 3px; /* Firefox */
+    -webkit-border-radius: 3px; /* Safari, Chrome */
+}
+
+img.btn_close {
+	float: right; 
+	margin: -28px -28px 0 0;
+}
+
+fieldset { 
+	border:none; 
+}
+
+form.signin .textbox label { 
+	display:block; 
+	padding-bottom:7px; 
+}
+
+form.signin .textbox span { 
+	display:block;
+}
+
+form.signin p, form.signin span { 
+	color:#999; 
+	font-size:11px; 
+	line-height:18px;
+} 
+
+form.signin .textbox input { 
+	background:#666666; 
+	border-bottom:1px solid #333;
+	border-left:1px solid #000;
+	border-right:1px solid #333;
+	border-top:1px solid #000;
+	color:#fff; 
+	border-radius: 3px 3px 3px 3px;
+	-moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+	font:13px Arial, Helvetica, sans-serif;
+	padding:6px 6px 4px;
+	width:200px;
+}

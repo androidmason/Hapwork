@@ -24,13 +24,14 @@ class CreateUsersTable extends Migration {
 	$table->string('profilepic', 255);
     $table->timestamps();
 	});
-	Schema::create('galleries' , function(Blueprint $table)
-	Schema::create('galleries' , function(Blueprint $table)
+	Schema::create('userinfo' , function(Blueprint $table)
 	{
 	$table->increments('id');
     $table->string('username', 20);
 	$table->string('email', 100)->unique();
-    $table->string('location', 255);
+    $table->string('facebook', 255);
+	$table->string('linkedin', 255);
+	$table->string('blogger', 255);
     $table->timestamps();
 	});
 	

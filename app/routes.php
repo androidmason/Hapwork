@@ -22,7 +22,8 @@ Route::get('/{username}',array(
  'uses' => 'ProfileController@user'
  ));
   
- Route::post('upload', 'ProfileController@upload');
+Route::get('/upload', 'ProfileController@getUploadForm');
+Route::post('/upload/image','ProfileController@postUpload');
  Route::post('multiupload', 'HomeController@multiUpload');
 
 

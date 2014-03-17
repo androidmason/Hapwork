@@ -37,7 +37,7 @@ html, body {
 				position: relative;
 			}
 			#carousel div img {
-				border: none;
+				
 			}
 			#carousel div span {
 				display: none;
@@ -57,3 +57,8 @@ html, body {
 				left: 50%;
 				border-radius: 3px;
 			}
+			#carousel img {
+		max-width: 600px;
+		max-height: 600px;
+		border: 1px solid #ccc;
+	}

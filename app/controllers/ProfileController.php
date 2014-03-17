@@ -58,92 +58,31 @@ public function update($id)
  
     return Redirect::back()->withInput()->withErrors($validation->errors);
 }
+	public function getUploadForm() {
+		return View::make('image/upload-form');
+	}
 
- public function upload()
-{
-	$rules = array(
-    'profile_img'     => 'image|max:3000'
-);
-   $validator = Validator::make(Input::all(), $rules);
-   
-      if ($validator->passes()) {
-        // validation has passed, save user in 
-			
-		Image::upload(Input::file('image'), 'uploads/' , true);
-		
+	public function postUpload() {
+		$file = Input::file('image');
+		$input = array('image' => $file);
+		$rules = array(
+			'image' => 'image'
+		);
+		$validator = Validator::make($input, $rules);
+		if ( $validator->fails() )
+		{
+			return Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+
 		}
 		else {
-        return Redirect::to('users/profile')->with('message', 'The following errors occurred')->withErrors($validator)->withInput(); 
-        }
-   
-}
+			$destinationPath = 'uploads/';
+			$filename = $file->getClientOriginalName();
+			Input::file('image')->move($destinationPath, $filename);
+			return Response::json(['success' => true, 'file' => asset($destinationPath.$filename)]);
+		}
 
-/*public function multiUpload()
-{
-	if (Input::hasFile('file[]')) {
-    $all_uploads = Input::file('file[]');
-	$folder = Input::get('folder');
-    // Make sure it really is an array
-    if (!is_array($all_uploads)) {
-        $all_uploads = array($all_uploads);
-    }
+	}
 
-    $error_messages = array();
 
-    // Loop through all uploaded files
-    foreach ($all_uploads as $upload) {
-        // Ignore array member if it's not an UploadedFile object, just to be extra save
-        if (!is_a($upload, 'Symfony\Component\HttpFoundation\File\UploadedFile')) {
-            continue;
-        }
 
-        $validator = Validator::make(
-            array('file' => $upload),
-            array('file' => 'required|mimes:jpeg,png|image|max:5000')
-        );
-
-        if ($validator->passes()) {
-            Image::upload($upload, 'uploads/'.$folder , true);
-        } else {
-            // Collect error messages
-            $error_messages[] = 'File "' . $upload->getClientOriginalName() . '":' . $validator->messages()->first('file');
-        }
-    }
-
-    // Redirect, return JSON, whatever...
-    return $error_messages;
-} else {
-    // No files have been uploaded
-}
-}*/
-
-public function multiUpload(){
-	$input = Input::all();
-    $rules = array(
-        'file' => 'image|max:3000',
-    );
- 
-    $validation = Validator::make($input, $rules);
- 
-    if ($validation->fails())
-    {
-        return Response::make($validation->errors->first(), 400);
-    }
- 
-    $file = Input::file('file[]');
- 
-    $extension = File::extension($file['name']);
-    $directory = path('public').'uploads/'.Input::get('folder');
-    $filename = sha1(time().time()).".{$extension}";
- 
-    $upload_success = Input::upload('file', $directory, $filename);
- 
-    if( $upload_success ) {
-        return Response::json('success', 200);
-    } else {
-        return Response::json('error', 400);
-    }
-}
-
-}
 ?>
