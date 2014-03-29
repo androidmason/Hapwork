@@ -12,6 +12,10 @@ class UsersController extends BaseController{
     $this->layout->content = View::make('home.profile');
 }
 
+public function getAuto() {
+    return View::make('users.auto');
+}
+
   public function postCreate() {
          
 		 $validator = Validator::make(Input::all(), User::$rules);

@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
  
     <title>Creatyst</title>
+
+	{{ HTML::script('js/jquery.js')}}
+	{{ HTML::script('js/main.js')}}
 	{{ HTML::style('packages/bootstrap/css/bootstrap.min.css') }}
     {{ HTML::style('css/main.css')}}
-
-  </head>
- 
+	{{ HTML::style('css/selectize.css')}}
+	{{ HTML::script('js/selectize.min.js')}}
+<script type="text/javascript">
+    var root = '{{url("/")}}';
+</script>
+</head>
   <body>
 	
 	<div class="navbar navbar-fixed-top">
@@ -34,6 +40,14 @@
 		
 		 {{ $content }}
     </div>
+	<form>
+	<select id="searchbox" name="q" placeholder="Search,products,categories" class="form-control" style="width:300px;"></select>
+	</form>
+<script>
+  $(document).ready(function(){
+      $('#searchbox').selectize();
+  });
+</script>
 	
   </body>
 </html>

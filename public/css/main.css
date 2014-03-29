@@ -6,7 +6,12 @@ body {
     width: 400px;
     margin: 0 auto;
 }
-
+#dp{
+   float:left;
+  }
+  #data{
+  float:center;
+  }  
 #left_pane {
   width: 300px;
   position: absolute;

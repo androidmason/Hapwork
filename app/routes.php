@@ -10,21 +10,21 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
+Route::get('/search', 'ProfileController@index');
 
-
-
+Route::get('user/{username}',array(
+ 'as' => 'profile-user',
+ 'uses' => 'ProfileController@user'
+ ));
 	
 Route::controller('/', 'HomeController');
 Route::controller('home', 'UsersController');
 
-Route::get('/{username}',array(
- 'as' => 'profile-user',
- 'uses' => 'ProfileController@user'
- ));
+
+ 
+ 
   
-Route::get('/upload', 'ProfileController@getUploadForm');
-Route::post('/upload/image','ProfileController@postUpload');
- Route::post('multiupload', 'HomeController@multiUpload');
+
 
 
 

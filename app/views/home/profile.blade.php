@@ -9,11 +9,12 @@
     {{ HTML::style('css/main.css')}}
 	{{ HTML::style('css/slider.css') }}
 	{{ HTML::style('css/fbphotobox.css') }}
-	<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
-	<script src="http://malsup.github.com/jquery.form.js"></script> 
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js" type="text/javascript"></script>
 	{{ HTML::script('js/jquery.carouFredSel-6.0.4-packed.js')}}
 	{{ HTML::script('js/fbphotobox.js')}}
 	{{ HTML::script('js/functions.js')}}
+	{{HTML::style('packages/selectize/css/selectize.bootstrap3.css')}}
+	{{ HTML::script('packages/selectize/js/standalone/selectize.min.js')}}
 	<script type="text/javascript">	
 			
 			$(document).ready(function() {	
@@ -68,21 +69,18 @@
     $('body').delegate('#image','change', function(){
         $('#upload').ajaxForm(options).submit();          
     });
-
-	$('.lightbox').click(function(){
-					$('.backdrop, .box').animate({'opacity':'.50'}, 300, 'linear');
-					$('.box').animate({'opacity':'1.00'}, 300, 'linear');
-					$('.backdrop, .box').css('display', 'block');
-				});
- 
-				$('.close').click(function(){
-					close_box();
-				});
- 
-				$('.backdrop').click(function(){
-					close_box();
-				});
-				
+	
+	$('#input-tags').selectize({
+    delimiter: ',',
+    persist: false,
+    maxItems: 1,
+    options: items,
+    labelField: "item",
+    valueField: "item",
+    sortField: 'item',
+    searchField: 'item'
+	});
+	
 	$('a.login-window').click(function() {
 		
 		// Getting the variable's value from a link 
@@ -142,14 +140,17 @@
         @if(Session::has('message'))
             <p class="alert">{{ Session::get('message') }}</p>
         @endif
+	
+		
 
 
 
 
-
-<?php $location = base_path().'\public\uploads\\'.$creatyst->username.'\\';
-      $path = 'uploads/'.$creatyst->username.'/';
-	  $base = 'www.hapwork.com/uploads/';
+<?php
+	$creatyst = User::where('username','=',Session::get('username'))->first();
+	$location = base_path().'\public\uploads\\'.$creatyst->username.'\\';
+    $path = 'uploads/'.$creatyst->username.'/';
+	$base = 'www.hapwork.com/uploads/';
 ?>
 	@if (File::isDirectory($location))
 <?php	
@@ -223,40 +224,12 @@ $files[$x] = 'uploads/default.jpg';
 				<a href="#login-box" class="login-window"><img  src="{{asset ('images/linkedin.png') }}" height="50" width="50" /></a>
 				<a href="#login-box" class="login-window"><img  src="{{asset ('images/blogger.png') }}" height="50" width="50" /></a>
             </div>
+			
         </div>
     </div>
 </div>
+</div>
 
-</div>
-<div id="login-box" class="login-popup">
-        <form method="post" class="signin" action="registration.php">
-                <fieldset class="textbox">
-				
-				<label class="name">
-                <span>Name</span>
-                <input id="name" name="name" value="" type="text" autocomplete="on" placeholder="Name">
-                </label>
-				
-            	<label class="username">
-                <span>Email</span>
-                <input id="username" name="username" value="" type="text" autocomplete="on" placeholder="Email id">
-                </label>
-                
-                <label class="contact">
-                <span>Contact number</span>
-                <input id="contact" name="contact" value="" type="tel" placeholder="Contact Number">
-                </label>
-				
-				<label class="college">
-                <span>College</span>
-                <input id="college" name="college" value="" type="text" placeholder="College">
-                </label>
-                
-				<label class="events">
-                <span>Event</span>
-                <select name="event">
-		</form>
-</div>
 	
 </body>
 </html>

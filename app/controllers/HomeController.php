@@ -3,7 +3,7 @@
 class HomeController extends BaseController {
 
   protected $layout = "layouts.main";
-  
+ 
   
   public function __construct() {
     $this->beforeFilter('csrf', array('on'=>'post'));
@@ -11,11 +11,21 @@ class HomeController extends BaseController {
 }
 
   public function getLogin() {
+	if(Auth::check()){
+	$creatyst = User::where('email','=',Auth::user()->email)->first();
+    return Redirect::to('profile')
+           ->with('username', $creatyst->username);
+	}
+	else
     $this->layout->content = View::make('users.login');
 }
   
   public function getRegister() {
     $this->layout->content = View::make('users.register');
+}
+
+public function getProfile() {
+    return View::make('home.profile');
 }
 
   public function postCreate() {
@@ -26,13 +36,21 @@ class HomeController extends BaseController {
         // validation has passed, save user in 
 		$user = new User;
 		$user->firstname = Input::get('firstname');
+		$user->lastname = Input::get('lastname');
 		$user->city = Input::get('city');
 		$user->email = Input::get('email');
 		$user->username = Input::get('username');
 		$user->talent = Input::get('talent');
 		$user->password = Hash::make(Input::get('password'));
 		$user->save();
-		return Redirect::to('login')->with('message', 'Thanks for registering!');
+		$users = array(
+        'email' => Input::get('email'),
+        'password' => Input::get('password')
+    );
+	if (Auth::attempt($users)) {
+	return Redirect::to('profile')
+        ->with('username', $user['username']);
+	}
 		}
 		else {
         return Redirect::to('register')->with('message', 'The following errors occurred')->withErrors($validator)->withInput(); 
@@ -47,8 +65,8 @@ class HomeController extends BaseController {
     );
 	if (Auth::attempt($user)) {
 	$creatyst = User::where('email','=',$user['email'])->first();
-     return View::make('home.profile')
-        ->with('creatyst', $creatyst);
+     return Redirect::to('profile')
+        ->with('username', $creatyst->username);
 	}
 	else {
     return Redirect::to('login')
@@ -66,7 +84,7 @@ class HomeController extends BaseController {
     $input = Input::all();
     $rules = array(
         'size' => 'max:50000',
-		'type' => 'mimes:png,jpg,gif'    );
+		'type' => 'mimes:png,jpg,gif');
  
     $validation = Validator::make($input, $rules);
  
@@ -83,11 +101,8 @@ class HomeController extends BaseController {
 	
  
     if( $upload_success ) {
-        $user = User::where('username','=',Input::get('folder'))->first();
-		$user->profilepic = $file->getClientOriginalName();
-		$user->save();
-		return View::make('home.profile')
-        ->with('creatyst', $user);
+        return Redirect::to('profile')
+        ->with('username', Input::get('folder'));
     } else {
 	    
         return Response::json('error', 400);
@@ -118,9 +133,8 @@ public function postMultiupload(){
 	
  
     if( $upload_success ) {
-        $creatyst = User::where('username','=',$directory)->first();
-     return View::make('home.profile')
-        ->with('creatyst', $creatyst);
+        return Redirect::to('profile')
+        ->with('username', $directory);
     } else {
 	    
         return Response::json('error', 400);
